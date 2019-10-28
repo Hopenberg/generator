@@ -1,38 +1,56 @@
 import argparse
 import uuid
-import psycopg2
+# import psycopg2
 import csv
 import os
-from employee_dao import EmployeeFactory
-from client_dao import ClientFactory
+from employee_dto import EmployeeFactory
+from client_dto import ClientFactory
+from survey_dto import ConductedSurveyFactory
 
 NUMBER_OF_RECORDS = 10
-CHANGE_PERCENT = 5
-
+CHANGE_PERCENT = 0
+GENDER_PERCENT = 50
+KIDS_PERCENT = 50
+LAST_CALLED = 1
+DISMISSAL_RATE = 20
+COMPLETED_PERCENT = 60
+PHONE_PRECENT = 80
+MINIMUM_SALARY = 2000
+MAXIMUM_SALARY = 5000
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Generate information for Employees, Clients, Survey to insert into database"
     )
-    parser.add_argument(
-        "basic_info",
-        metavar="J",
-        nargs=2,
-        type=int,
-        help="Usage:\n"
-        "- first integer: how much data to create range 1-1.000.000\n"
-        "- second integer: change percent \n"
-        "- "
-        #TODO gender,  dismissalrate,  education, has_kids, last_called,
+    parser.add_argument('type', help="employee, client or survey")
+    parser.add_argument('-n', help="number of records", default=10)
+    parser.add_argument('--change', help='change percent (default = 0)', default=0)
+    parser.add_argument('--gender', help='percent of males (default = 50)', default=50)
+    parser.add_argument('--kids', help='percent of peoples having kids (default = 50)',default=50)
+    parser.add_argument('--last-called', help='when was the last call maximum in years (default = 1)',default=1)
+    parser.add_argument('--dismissal', help='dismissal percent (default = 20)',default=20)
+    parser.add_argument('--completed', help='surveys completed percent (default = 60',default=60)
+    parser.add_argument('--phone', help='what is the percent of surveys conducted by calls',default=80)
+    parser.add_argument('--min-salary', help='minimum salary of the employees', default=2000)
+    parser.add_argument('--max-salary', help='maximum salary of the employees', default=5000)
 
-    )
-    args = parser.parse_args()
-    NUMBER_OF_RECORDS = (args.basic_info[0])
-    CHANGE_PERCENT = (args.basic_info[0])
-    employees = [EmployeeFactory.generate_employee() for i in range(NUMBER_OF_RECORDS)]
-    clients = [ClientFactory.generate_client() for i in range(NUMBER_OF_RECORDS)]
-    # print([employee.dismissal_date for employee in employees])
-    with open("employee_file.csv", mode="w") as employee_file:
+
+    args=(parser.parse_args()) 
+    NUMBER_OF_RECORDS = args.n
+    CHANGE_PERCENT = args.change
+    GENDER_PERCENT = args.gender
+    KIDS_PERCENT = args.kids
+    LAST_CALLED = args.last_called
+    DISMISSAL_RATE = args.dismissal
+    COMPLETED_PERCENT = args.completed
+    PHONE_PRECENT = args.phone
+    MINIMUM_SALARY = args.min_salary
+    MAXIMUM_SALARY = args.max_salary
+    print(MAXIMUM_SALARY)
+    if args.type == 'employee':
+        print('generating employees...')
+        employees = [EmployeeFactory.generate_employee() for i in range(NUMBER_OF_RECORDS)]
+        with open("employee_file.csv", mode="w") as employee_file:
         employee_writer = csv.writer(
             employee_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
         )
@@ -51,8 +69,10 @@ if __name__ == "__main__":
         )
         for employee in employees:
             employee_writer.writerow(vars(employee).values())
-        
-    with open("clients_file.csv", mode="w") as clients_file:
+    elif args.type == 'client':
+        print('generating clients...')
+        clients = [ClientFactory.generate_client() for i in range(NUMBER_OF_RECORDS)]
+        with open("clients_file.csv", mode="w") as clients_file:
         clients_writer = csv.writer(
             clients_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
         )
@@ -76,6 +96,14 @@ if __name__ == "__main__":
         for client in clients:
             clients_writer.writerow(vars(client).values())
 
+    elif args.type == 'survey':
+        print('generating surveys...')
+        conducted_surveys = [ConductedSurveyFactory.generate_conducted_survey() for i in range(NUMBER_OF_RECORDS)]
+    else:
+        print('Wrong option type --help for usage')
+   
+        
+    
 
 
 

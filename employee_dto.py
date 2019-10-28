@@ -7,7 +7,7 @@ from faker.providers import date_time
 import uuid
 
 
-class ClientDAO:
+class EmployeeDTO:
     def __init__(
         self,
         id,
@@ -15,65 +15,48 @@ class ClientDAO:
         last_name=None,
         dob=None,
         gender=None,
-        profession=None,
-        has_kids=None,
+        employment_date=None,
+        dismissal_date=None,
         education=None,
-        email=None,
-        phone = None,
-        last_called= None,
-        is_married=None
+        salary=None,
     ):
         self.id = id
         self.first_name = first_name
         self.last_name = last_name
         self.dob = dob
         self.gender = gender
-        self.profession = profession
-        self.has_kids = has_kids
+        self.employment_date = employment_date
+        self.dismissal_date = dismissal_date
         self.education = education
-        self.email = email
-        self.phone = phone
-        self.last_called = last_called
-        self.is_married = is_married
+        self.salary = salary
 
 
-class ClientFactory:
+class EmployeeFactory:
     @staticmethod
-    def generate_client():
+    def generate_employee():
         faker = Faker()
         id = uuid.uuid4()
         random_gender = randrange(0, 2)
         if random_gender:
             gender = 1
             first_name = faker.first_name_male()
-            # first_name = random.choice(male_first_names)
         else:
             gender = 0
-            # first_name = random.choice(female_first_names)
             first_name = faker.first_name_female()
         last_name = faker.last_name()
         dob = faker.date_of_birth(minimum_age=18, maximum_age=70)
-        profession = faker.job()
-        email = faker.email()
-        phone = faker.phone_number()
-        last_called = faker.date_this_year(before_today=True, after_today=False)
-        is_married = randrange(0,2)
-        has_kids = randrange(0,2)
-            
-        return ClientDAO(
+        employment_date = faker.date_between(start_date=dob, end_date="today")
+        dismissal_date = faker.date_between(
+            start_date=employment_date, end_date="today"
+        )
+        return EmployeeDTO(
             id=id,
             first_name=first_name,
             last_name=last_name,
             gender=gender,
             dob=dob,
-            profession=profession,
-            has_kids=has_kids,
+            employment_date=employment_date,
+            dismissal_date=dismissal_date,
             education=random.choice(education),
-            email=email,
-            phone=phone,
-            last_called=last_called,
-            is_married=is_married
-            
-          
-            
+            salary=randrange(2000, 5000, 100),
         )

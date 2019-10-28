@@ -7,7 +7,7 @@ from faker.providers import date_time
 import uuid
 
 
-class EmployeeDAO:
+class ClientDTO:
     def __init__(
         self,
         id,
@@ -15,25 +15,31 @@ class EmployeeDAO:
         last_name=None,
         dob=None,
         gender=None,
-        employment_date=None,
-        dismissal_date=None,
+        profession=None,
+        has_kids=None,
         education=None,
-        salary=None,
+        email=None,
+        phone = None,
+        last_called= None,
+        is_married=None
     ):
         self.id = id
         self.first_name = first_name
         self.last_name = last_name
         self.dob = dob
         self.gender = gender
-        self.employment_date = employment_date
-        self.dismissal_date = dismissal_date
+        self.profession = profession
+        self.has_kids = has_kids
         self.education = education
-        self.salary = salary
+        self.email = email
+        self.phone = phone
+        self.last_called = last_called
+        self.is_married = is_married
 
 
-class EmployeeFactory:
+class ClientFactory:
     @staticmethod
-    def generate_employee():
+    def generate_client():
         faker = Faker()
         id = uuid.uuid4()
         random_gender = randrange(0, 2)
@@ -47,18 +53,27 @@ class EmployeeFactory:
             first_name = faker.first_name_female()
         last_name = faker.last_name()
         dob = faker.date_of_birth(minimum_age=18, maximum_age=70)
-        employment_date = faker.date_between(start_date=dob, end_date="today")
-        dismissal_date = faker.date_between(
-            start_date=employment_date, end_date="today"
-        )
-        return EmployeeDAO(
+        profession = faker.job()
+        email = faker.email()
+        phone = faker.phone_number()
+        last_called = faker.date_this_year(before_today=True, after_today=False)
+        is_married = randrange(0,2)
+        has_kids = randrange(0,2)
+            
+        return ClientDTO(
             id=id,
             first_name=first_name,
             last_name=last_name,
             gender=gender,
             dob=dob,
-            employment_date=employment_date,
-            dismissal_date=dismissal_date,
+            profession=profession,
+            has_kids=has_kids,
             education=random.choice(education),
-            salary=randrange(2000, 5000, 100),
+            email=email,
+            phone=phone,
+            last_called=last_called,
+            is_married=is_married
+            
+          
+            
         )
