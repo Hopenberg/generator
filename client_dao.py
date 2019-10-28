@@ -37,9 +37,9 @@ class ClientDAO:
         self.is_married = is_married
 
 
-class EmployeeFactory:
+class ClientFactory:
     @staticmethod
-    def generate_employee():
+    def generate_client():
         faker = Faker()
         id = uuid.uuid4()
         random_gender = randrange(0, 2)
@@ -55,18 +55,25 @@ class EmployeeFactory:
         dob = faker.date_of_birth(minimum_age=18, maximum_age=70)
         profession = faker.job()
         email = faker.email()
-        phone = faker.phone()
-        last_called = faker.date.past(2,"2019-09-01")
-        if random_married:
-            is_married = 
-        return EmployeeDAO(
+        phone = faker.phone_number()
+        last_called = faker.date_this_year(before_today=True, after_today=False)
+        is_married = randrange(0,2)
+        has_kids = randrange(0,2)
+            
+        return ClientDAO(
             id=id,
             first_name=first_name,
             last_name=last_name,
             gender=gender,
             dob=dob,
-            employment_date=employment_date,
-            dismissal_date=dismissal_date,
+            profession=profession,
+            has_kids=has_kids,
             education=random.choice(education),
-            salary=randrange(2000, 5000, 100),
+            email=email,
+            phone=phone,
+            last_called=last_called,
+            is_married=is_married
+            
+          
+            
         )

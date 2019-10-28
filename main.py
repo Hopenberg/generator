@@ -4,7 +4,7 @@ import psycopg2
 import csv
 import os
 from employee_dao import EmployeeFactory
-
+from client_dao import ClientFactory
 
 NUMBER_OF_RECORDS = 10
 CHANGE_PERCENT = 5
@@ -22,13 +22,15 @@ if __name__ == "__main__":
         help="Usage:\n"
         "- first integer: how much data to create range 1-1.000.000\n"
         "- second integer: change percent \n"
+        "- "
+        #TODO gender,  dismissalrate,  education, has_kids, last_called,
 
     )
     args = parser.parse_args()
     NUMBER_OF_RECORDS = (args.basic_info[0])
     CHANGE_PERCENT = (args.basic_info[0])
     employees = [EmployeeFactory.generate_employee() for i in range(NUMBER_OF_RECORDS)]
-    clients = []
+    clients = [ClientFactory.generate_client() for i in range(NUMBER_OF_RECORDS)]
     # print([employee.dismissal_date for employee in employees])
     with open("employee_file.csv", mode="w") as employee_file:
         employee_writer = csv.writer(
@@ -49,6 +51,39 @@ if __name__ == "__main__":
         )
         for employee in employees:
             employee_writer.writerow(vars(employee).values())
+        
+    with open("clients_file.csv", mode="w") as clients_file:
+        clients_writer = csv.writer(
+            clients_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
+        )
+        clients_writer.writerow(
+            [
+                "client_id",
+                "first_name",
+                "last_name",
+                "dob",
+                "gender",
+                "profession",
+                "dismissal_date",
+                "has_kids",
+                "education",
+                "email",
+                "phone",
+                "last_called",
+                "is_married"
+            ]
+        )
+        for client in clients:
+            clients_writer.writerow(vars(client).values())
+
+
+
+
+
+
+
+
+
 
     # try:
     #     connection = psycopg2.connect(
