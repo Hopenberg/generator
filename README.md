@@ -11,4 +11,4 @@ pipenv install
 
 run
 ```
-python main.py [number_of_data_to_generate] 0
+python main.py --help
