@@ -51,48 +51,48 @@ if __name__ == "__main__":
         print('generating employees...')
         employees = [EmployeeFactory.generate_employee() for i in range(NUMBER_OF_RECORDS)]
         with open("employee_file.csv", mode="w") as employee_file:
-        employee_writer = csv.writer(
-            employee_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
-        )
-        employee_writer.writerow(
-            [
-                "employee_id",
-                "first_name",
-                "last_name",
-                "dob",
-                "gender",
-                "employment_date",
-                "dismissal_date",
-                "education",
-                "salary",
-            ]
-        )
+            employee_writer = csv.writer(
+                employee_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
+            )
+            employee_writer.writerow(
+                [
+                    "employee_id",
+                    "first_name",
+                    "last_name",
+                    "dob",
+                    "gender",
+                    "employment_date",
+                    "dismissal_date",
+                    "education",
+                    "salary",
+                ]
+            )
         for employee in employees:
             employee_writer.writerow(vars(employee).values())
     elif args.type == 'client':
         print('generating clients...')
         clients = [ClientFactory.generate_client() for i in range(NUMBER_OF_RECORDS)]
         with open("clients_file.csv", mode="w") as clients_file:
-        clients_writer = csv.writer(
-            clients_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
-        )
-        clients_writer.writerow(
-            [
-                "client_id",
-                "first_name",
-                "last_name",
-                "dob",
-                "gender",
-                "profession",
-                "dismissal_date",
-                "has_kids",
-                "education",
-                "email",
-                "phone",
-                "last_called",
-                "is_married"
-            ]
-        )
+            clients_writer = csv.writer(
+                clients_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
+            )
+            clients_writer.writerow(
+                [
+                    "client_id",
+                    "first_name",
+                    "last_name",
+                    "dob",
+                    "gender",
+                    "profession",
+                    "dismissal_date",
+                    "has_kids",
+                    "education",
+                    "email",
+                    "phone",
+                    "last_called",
+                    "is_married"
+                ]
+            )
         for client in clients:
             clients_writer.writerow(vars(client).values())
 
