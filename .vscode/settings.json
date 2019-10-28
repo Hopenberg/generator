@@ -1,0 +1,4 @@
+{
+    "python.formatting.provider": "black",
+    "python.pythonPath": "/home/adrian/.local/share/virtualenvs/generator-6aZrapoB/bin/python"
+}
